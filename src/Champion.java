@@ -10,7 +10,9 @@ public abstract class Champion {
         this.name = name;
         this.level = level;
         this.hp = hp;
-        this.attackDamage = attackDamage;
+        //attackDamage 값을 난수(랜덤)로 만들어 “치명타 개념” 추가
+        //객체마다 랜덤으로 다른 공격력 부여
+        this.attackDamage = attackDamage + (int)(Math.random() * 10);
         this.defense = defense;
     }
 
@@ -33,6 +35,11 @@ public abstract class Champion {
 
         System.out.println(name + "이(가) " + actualDamage + " 피해를 받았습니다!");
         System.out.println("현재 체력: " + hp);
+
+        //체력이 0 이하가 되면 “name 사망!” 메시지 출력
+        if(hp <= 0){
+            System.out.println( name + " 사망!");
+        }
     }
 
     //이름 변경
@@ -40,14 +47,27 @@ public abstract class Champion {
         this.name = newName;
     }
 
-    //Q스킬
-    public abstract void useQ(Champion target);
-
     //챔피언이 챔피언을 공격한다.
     public void basicAttack(Champion target){
         System.out.println(getName() + " → " + target.getName() + " 평타 공격!");
-        target.takeDamage(attackDamage);
+
+        //객체마다 다르게 부여받은 공격력 값을 finalDamage 변수에 넣음
+        int finalDamage = this.attackDamage;
+        target.takeDamage(finalDamage);
     }
+
+    //Q스킬
+    public abstract void useQ(Champion target);
+
+    //W스킬
+    public abstract void useW(Champion target);
+
+    //E스킬
+    public abstract void useE(Champion target);
+
+    //R스킬
+    public abstract void useR(Champion target);
+
 
 
     //게터
