@@ -32,6 +32,8 @@ public class Main {
 
         System.out.println(garen);
         System.out.println(ashe);
+        System.out.println(lux);
+        System.out.println(teemo);
 
     }
 }
