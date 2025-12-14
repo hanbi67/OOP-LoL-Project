@@ -17,11 +17,11 @@ public abstract class Champion {
     public Champion(String name) {
         this.name = name;
         this.level = GameConstants.BASE_LEVEL;
-        this.hp = GameConstants.BASE_HP;
+        this.hp = ChampionStat.HP.getBaseValue();
         //attackDamage 값을 난수(랜덤)로 만들어 “치명타 개념” 추가
         //객체마다 랜덤으로 다른 공격력 부여
-        this.attackDamage = GameConstants.BASE_ATTACK_DAMAGE + (int)(Math.random() * 10);
-        this.defense = GameConstants.BASE_DEFENSE ;
+        this.attackDamage = ChampionStat.ATTACK_DAMAGE.getBaseValue() + (int)(Math.random() * 10);
+        this.defense = ChampionStat.DEFENSE.getBaseValue() ;
         this.resurrectCount = GameConstants.BASE_RESURRECT_COUNT;
 
         createdCount++; // 챔피언이 생성될 때마다 +1
@@ -34,7 +34,7 @@ public abstract class Champion {
         }
 
         this.level++;
-        this.hp += 80;
+        this.hp += 50;
         this.attackDamage += 5;
         this.defense += 3;
         System.out.println(name + " 레벨업! 현재 레벨: " + level);
@@ -55,11 +55,8 @@ public abstract class Champion {
         //체력이 0 이하가 되면 “name 사망!” 메시지 출력
         if(hp <= 0){
             System.out.println( name + " 사망!");
-            //최초 사망 시 부활
-            if(resurrectCount == 0){
-                //부활 메서드
-                resurrect();
-            }
+            //부활 메서드
+            resurrect();
         }
     }
 
@@ -75,18 +72,52 @@ public abstract class Champion {
         battleCount++;
     }
 
-    //챔피언 사망 시 부활 최대 1번만 가능
-    //부활 시 규칙 - 기본 체력의 20% 회복
-    public final void resurrect(){
-        System.out.println(getName() + "이(가) 다시 부활합니다!");
+    //전투 로그 static 중첩 클래스 - 전투 메시지를 모아두는 기능
+    public static class Log{
+        private String message;
 
-        this.hp = (int)(GameConstants.BASE_HP * 0.2);
+        public Log(String message) {
+            this.message = message;
+        }
 
-        System.out.println(getName() + "의 체력: " + hp);
-
-        //부활 횟수 카운팅
-        resurrectCount++;
+        public void print() {
+            System.out.println("[Log]" +  message);
+        }
     }
+
+    // 부활 가능 조건
+    protected abstract boolean canResurrect();
+
+    // 부활 후 추가 효과
+    protected void afterResurrect() {
+        // 기본 구현은 비워둠
+    }
+
+    //부활 템플릿 메서드 (고정 규칙)
+    public final void resurrect(){
+        //챔피언마다 다른 부활 조건
+        if(!canResurrect()){
+            System.out.println(getName() + "은(는) 부활 조건을 만족하지 않아 부활할 수 없습니다.");
+            return;
+        }
+
+        //공통 부활 규칙 - 기본 체력의 20%
+        int resurrectHp = (int)(ChampionStat.HP.getBaseValue() * 0.2);
+
+        if (resurrectHp <= 0) {
+            resurrectHp = 1; // 최소 1 보장
+        }
+
+        setHp(resurrectHp);
+
+        setResurrectCount(); //부활 횟수 카운팅
+        System.out.println(getName() + "이(가) 다시 부활합니다!");
+        System.out.println(getName() + "의 체력: " + getHp());
+
+        //부활 시 추가 효과 (hook)
+        afterResurrect();
+    }
+
 
     //Q스킬
     public abstract void useQ(Champion target);
@@ -107,19 +138,28 @@ public abstract class Champion {
         return this.name;
     }
 
+    public int getHp() {
+        return hp;
+    }
+
     public int getAttackDamage() {
         return attackDamage;
     }
 
-    public int getHp() {
-        return hp;
+    public int getDefense() {
+        return defense;
     }
 
     public static int getCreatedCount() {
         return createdCount;
     }
+
     public static int getBattleCount() {
         return battleCount;
+    }
+
+    public int getResurrectCount() {
+        return resurrectCount;
     }
 
     //세터
@@ -128,9 +168,21 @@ public abstract class Champion {
         this.hp = hp;
     }
 
+    public void setAttackDamage(int attackDamage){
+        this.attackDamage = attackDamage;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
     //다른 클래스에서도 battleCount를 증가시킬 수 있도록 set메서드
     public static void setBattleCount() {
         battleCount++;
+    }
+    
+    public void setResurrectCount() {
+        resurrectCount++;
     }
 
     @Override
@@ -143,4 +195,6 @@ public abstract class Champion {
                 ", defense=" + defense +
                 '}';
     }
+
+
 }

@@ -16,10 +16,9 @@ public class Main {
         /* BattleUtile battleUtils = new BattleUtile();
         Champion winner = BattleUtils.pickHigherHp(garen, ashe); */
 
-
         //static 클래스(중첩 클래스) 사용
-        GameLog.LogEntry startEntry = new GameLog.LogEntry("전투 시작");
-        startEntry.print();
+        Champion.Log startLog = new Champion.Log("전투 시작");
+        startLog.print();
 
         garen.levelUp();
 
@@ -38,11 +37,11 @@ public class Main {
         ashe.useW(garen);
         garen.useQ(ashe);
 
-        GameLog.LogEntry endEntry = new GameLog.LogEntry("전투 종료");
-        endEntry.print();
+        Champion.Log endLog = new Champion.Log("전투 종료");
+        endLog.print();
 
-        GameLog.LogEntry summitEntry = new GameLog.LogEntry("전투 결과");
-        summitEntry.print();
+        Champion.Log resultLog = new Champion.Log("전투 결과");
+        resultLog.print();
 
         //전투 종료 후 호출
         Champion winner = BattleUtils.pickHigherHp(garen, ashe);

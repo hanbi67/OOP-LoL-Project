@@ -9,10 +9,6 @@ public class GameConstants {
 
     public static final int BASE_LEVEL = 1;
     public static final int MAX_LEVEL = 18;
-    public static final int BASE_HP = 100;
-    public static final int MAX_HP = 1000;
-    public static final int BASE_ATTACK_DAMAGE = 30;
-    public static final int BASE_DEFENSE = 40;
     public static final int BASE_RESURRECT_COUNT = 0;
     public static final int BASE_CDR = 10;
     public static final String GAME_MODE = "NORMAL";
@@ -20,6 +16,30 @@ public class GameConstants {
 
     private GameConstants(){} // 인스턴스 생성 방지
 
-    //==> ENUM
+    //==> ENUM: 의미가 같은 상수들끼리 묶어주는 역할, 종류가 정해진 값 그룹
+    // 1. 속성(체력/공격/방어) -> enum으로 표현
+    // 2. 게임 설정 상수는 상수 클래스 그대로 유지
+
+//    public enum ChampionStat {
+//        HP(100, 1000),
+//        ATTACK_DAMAGE(30, 999),
+//        DEFENSE(40, 999);
+//
+//        private final int baseValue;
+//        private final int maxValue;
+//
+//        ChampionStat(int baseValue, int maxValue) {
+//            this.baseValue = baseValue;
+//            this.maxValue = maxValue;
+//        }
+//
+//        public int getBaseValue() {
+//            return baseValue;
+//        }
+//
+//        public int getMaxValue() {
+//            return maxValue;
+//        }
+//    }
 
 }
