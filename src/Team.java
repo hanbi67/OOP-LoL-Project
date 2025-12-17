@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Team<T> {
+public class Team<T extends Champion> {
     //[선택 미션] 2. 잘못된 제네릭 설계 사례 만들고 고쳐보기
     //Team<String> stringTeam = new Team<>();
     //Team<Integer> numberTeam = new Team<>();
@@ -60,11 +60,11 @@ public class Team<T> {
 
     //[선택 미션] 1. 제네릭 와일드카드 적용해보기
     //List<Garen> , List<Champion> 모두 받을 수 있음.
-    public static void printTeamMembers(List<? extends Champion> team){
-        for(Champion champion : team){
-            System.out.println(champion.getName());
-        }
-    }
+//    public static void printTeamMembers(List<? extends Champion> team){
+//        for(Champion champion : team){
+//            System.out.println(champion.getName());
+//        }
+//    }
 
 }
 
