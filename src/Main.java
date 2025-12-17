@@ -1,7 +1,17 @@
+import java.util.ArrayList;
+import java.util.List;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+
+        //[선택 미션] 1. 제네릭 와일드카드 적용해보기
+        List<Garen> garenTeam = new ArrayList<>();
+        List<Champion> championTeam = new ArrayList<>();
+
+        Team.printTeamMembers(garenTeam);
+        Team.printTeamMembers(championTeam);
 
         // 챔피언 Pool 구성
         ChampionPool pool = new ChampionPool();
